@@ -2,34 +2,39 @@ import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import { Container, Header, Section, Text } from 'components';
 import { Gallery, Todos } from 'tabs';
+import { Component } from 'react';
 
-export const App = () => {
-  return (
-    <>
-      <Header />
+export class App extends Component {
 
-      <Section>
-        <Container>
-          <Tabs>
-            <TabList>
-              <Tab>
-                <Text>Gallery</Text>
-              </Tab>
-              <Tab>
-                <Text>Todos</Text>
-              </Tab>
-            </TabList>
+  
+  render() {
+    return (
+      <>
+        <Header />
 
-            <TabPanel>
-              <Gallery />
-            </TabPanel>
+        <Section>
+          <Container>
+            <Tabs>
+              <TabList>
+                <Tab>
+                  <Text>Gallery</Text>
+                </Tab>
+                <Tab>
+                  <Text>Todos</Text>
+                </Tab>
+              </TabList>
 
-            <TabPanel>
-              <Todos />
-            </TabPanel>
-          </Tabs>
-        </Container>
-      </Section>
-    </>
-  );
-};
+              <TabPanel>
+                <Gallery />
+              </TabPanel>
+
+              <TabPanel>
+                <Todos />
+              </TabPanel>
+            </Tabs>
+          </Container>
+        </Section>
+      </>
+    );
+  }
+}
