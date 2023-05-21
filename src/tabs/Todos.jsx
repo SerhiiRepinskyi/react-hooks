@@ -1,54 +1,50 @@
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 import { nanoid } from 'nanoid';
 import { Grid, GridItem, SearchForm, EditForm, Text, Todo } from 'components';
 
-export class Todos extends Component {
-  state = {
-    todos: [],
+export const Todos = () => {
+  const [todos, setTodos] = useState(JSON.parse(localStorage.getItem('todos')) ?? []);
+
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]); 
+
+  const handleSubmit = string => {
+    setTodos(prev => [...prev, { id: nanoid(), text: string }]);
   };
 
-  handleSubmit = string => {
-    this.setState(prev => ({
-      todos: [...prev.todos, { id: nanoid(), text: string }],
-    }));
+  const handleDelete = id => {
+    setTodos(prev => prev.filter(el => el.id !== id));
   };
 
-  handleDelete = id => {
-    this.setState(prev => ({
-      todos: prev.todos.filter(el => el.id !== id),
-    }));
-  };
-
-  handleEdit = todo => {
-    this.setState(prev => ({
-      todos: prev.todos.map(el => {
+  const handleEdit = todo => {
+    setTodos(prev =>
+      prev.map(el => {
         if (el.id === todo.id) {
           el.text = todo.text;
         }
         return el;
-      }),
-    }));
+      })
+    );
   };
 
-  render() {
-    return (
-      <>
-        <Text>Todos</Text>
-        <SearchForm onSubmit={this.handleSubmit} />
-        <Grid>
-          {this.state.todos.map((el, index) => (
-            <GridItem key={el.id}>
-              <Todo
-                text={el.text}
-                id={el.id}
-                handleDelete={this.handleDelete}
-                index={index + 1}
-                handleEdit={this.handleEdit}
-              />
-            </GridItem>
-          ))}
-        </Grid>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <Text>Todos</Text>
+      <SearchForm onSubmit={handleSubmit} />
+      <Grid>
+        {todos.map((el, index) => (
+          <GridItem key={el.id}>
+            <Todo
+              text={el.text}
+              id={el.id}
+              handleDelete={handleDelete}
+              index={index + 1}
+              handleEdit={handleEdit}
+            />
+          </GridItem>
+        ))}
+      </Grid>
+    </>
+  );
+};
